@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction App</title>
+    <style>
+         html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%; /* Ensures responsiveness */
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="radio"], input[type="number"], select {
+            margin-right: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+    <script>
+        async function getPrediction() {
+            const inputData = {
+                area_type: document.querySelector('input[name="area_type"]:checked').value,
+                availability: document.querySelector('input[name="availability"]:checked').value,
+                size: document.getElementById('size').value,
+                total_sqft: document.getElementById('total_sqft').value,
+                site_location: document.getElementById('site_location').value,
+                society: document.getElementById('society').value,
+            };
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(inputData),
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                document.getElementById('result').innerText = 'Prediction: ₹ ' + parseFloat(result.prediction).toFixed(2) + ' lakhs'; // Updated line
+            } else {
+                document.getElementById('result').innerText = 'Error in prediction';
+                }
+        }
+        
+
+        // // Function to format prediction into lakhs
+        // function formatPrediction(prediction) {
+        //     return (prediction / 100000).toFixed(2);  // Convert to lakhs
+        // }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Prediction App</h1>
+        <div class="form-group">
+            <label>Area Type:</label>
+            <input type="radio" name="area_type" value="Super built-up Area" required> Super built-up Area<br>
+            <input type="radio" name="area_type" value="Built-up Area"> Built-up Area<br>
+            <input type="radio" name="area_type" value="Plot Area"> Plot Area<br>
+        </div>
+        <div class="form-group">
+            <label>Availability:</label>
+            <input type="radio" name="availability" value="Ready to Move" required> Ready to Move<br>
+            <input type="radio" name="availability" value="Not Ready to Move"> Not Ready to Move<br>
+        </div>
+        <div class="form-group">
+            <label for="size">BHK:</label>
+            <input type="number" id="size" required>
+        </div>
+        <div class="form-group">
+            <label for="society">Society:</label>
+            <select id="society" required>
+                <option value="nan" selected>nan</option>
+                <option value="Coomee">Coomee</option>
+                <option value="Theanmp">Theanmp</option>
+                <option value="SJovest">SJovest</option>
+                <option value="ThhtsV">ThhtsV</option>
+                <option value="RSntsAp">RSntsAp</option>
+                <!-- Add more societies as needed -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="total_sqft">Total Square Feet:</label>
+            <input type="number" id="total_sqft" required>
+        </div>
+        <div class="form-group">
+            <label for="site_location">Site Location:</label>
+            <select id="site_location" required>
+                <option value="nan" selected>nan</option>
+                <option value="Alandi Road">Alandi Road</option>
+                <option value="Ambegaon Budruk">Ambegaon Budruk</option>
+                <option value="Anandnagar">Anandnagar</option>
+                <option value="Aundh">Aundh</option>
+                <option value="Aundh Road">Aundh Road</option>
+                <option value="Balaji Nagar">Balaji Nagar</option>
+                <option value="Baner">Baner</option>
+                <option value="Baner road">Baner road</option>
+                <option value="Bhandarkar Road">Bhandarkar Road</option>
+                <option value="Bhavani Peth">Bhavani Peth</option>
+                <option value="Bibvewadi">Bibvewadi</option>
+                <option value="Bopodi">Bopodi</option>
+                <option value="Budhwar Peth">Budhwar Peth</option>
+                <option value="Bund Garden Road">Bund Garden Road</option>
+                <option value="Camp">Camp</option>
+                <option value="Chandan Nagar">Chandan Nagar</option>
+                <option value="Dapodi">Dapodi</option>
+                <option value="Deccan Gymkhana">Deccan Gymkhana</option>
+                <option value="Dehu Road">Dehu Road</option>
+                <option value="Dhankawadi">Dhankawadi</option>
+                <option value="Dhayari Phata">Dhayari Phata</option>
+                <option value="Dhole Patil Road">Dhole Patil Road</option>
+                <option value="Erandwane">Erandwane</option>
+                <option value="Fatima Nagar">Fatima Nagar</option>
+                <option value="Fergusson College Road">Fergusson College Road</option>
+                <option value="Ganesh Peth">Ganesh Peth</option>
+                <option value="Ganeshkhind">Ganeshkhind</option>
+                <option value="Ghorpade Peth">Ghorpade Peth</option>
+                <option value="other">other</option>
+                <option value="Gokhale Nagar">Gokhale Nagar</option>
+                <option value="Gultekdi">Gultekdi</option>
+                <option value="Guruwar peth">Guruwar peth</option>
+                <option value="Hadapsar">Hadapsar</option>
+                <option value="Hadapsar Industrial Estate">Hadapsar Industrial Estate</option>
+                <option value="Hingne Khurd">Hingne Khurd</option>
+                <option value="Jangali Maharaj Road">Jangali Maharaj Road</option>
+                <option value="Kalyani Nagar">Kalyani Nagar</option>
+                <option value="Karve Nagar">Karve Nagar</option>
+                <option value="Karve Road">Karve Road</option>
+                <option value="Kasba Peth">Kasba Peth</option>
+                <option value="Katraj">Katraj</option>
+                <option value="Khadaki">Khadaki</option>
+                <option value="Khadki">Khadki</option>
+                <option value="Kharadi">Kharadi</option>
+                <option value="Kondhwa">Kondhwa</option>
+                <option value="Kondhwa Budruk">Kondhwa Budruk</option>
+                <option value="Kondhwa Khurd">Kondhwa Khurd</option>
+                <option value="Koregaon Park">Koregaon Park</option>
+                <option value="Kothrud">Kothrud</option>
+                <option value="Law College Road">Law College Road</option>
+                <option value="Laxmi Road">Laxmi Road</option>
+                <option value="Lulla Nagar">Lulla Nagar</option>
+                <option value="Mahatma Gandhi Road">Mahatma Gandhi Road</option>
+                <option value="Mangalwar peth">Mangalwar peth</option>
+                <option value="Manik Bagh">Manik Bagh</option>
+                <option value="Market yard">Market yard</option>
+                <option value="Model colony">Model colony</option>
+                <option value="Mukund Nagar">Mukund Nagar</option>
+                <option value="Mundhawa">Mundhawa</option>
+                <option value="Nagar Road">Nagar Road</option>
+                <option value="Nana Peth">Nana Peth</option>
+                <option value="Narayan Peth">Narayan Peth</option>
+                <option value="Narayangaon">Narayangaon</option>
+                <option value="Navi Peth">Navi Peth</option>
+                <option value="Padmavati">Padmavati</option>
+                <option value="Parvati Darshan">Parvati Darshan</option>
+                <option value="Pashan">Pashan</option>
+                <option value="Paud Road">Paud Road</option>
+                <option value="Pirangut">Pirangut</option>
+                <option value="Prabhat Road">Prabhat Road</option>
+                <option value="Pune Railway Station">Pune Railway Station</option>
+                <option value="Rasta Peth">Rasta Peth</option>
+                <option value="Raviwar Peth">Raviwar Peth</option>
+                <option value="Sadashiv Peth">Sadashiv Peth</option>
+                <option value="Sahakar Nagar">Sahakar Nagar</option>
+                <option value="Salunke Vihar">Salunke Vihar</option>
+                <option value="Sasson Road">Sasson Road</option>
+                <option value="Satara Road">Satara Road</option>
+                <option value="Senapati Bapat Road">Senapati Bapat Road</option>
+                <option value="Shaniwar Peth">Shaniwar Peth</option>
+                <option value="Shivaji Nagar">Shivaji Nagar</option>
+                <option value="Shukrawar Peth">Shukrawar Peth</option>
+                <option value="Sinhagad Road">Sinhagad Road</option>
+                <option value="Somwar Peth">Somwar Peth</option>
+                <option value="Swargate">Swargate</option>
+                <option value="Tilak Road">Tilak Road</option>
+                <option value="Uruli Devachi">Uruli Devachi</option>
+                <option value="Vadgaon Budruk">Vadgaon Budruk</option>
+                <option value="Wadgaon Sheri">Wadgaon Sheri</option>
+                <option value="Viman Nagar">Viman Nagar</option>
+                <option value="Vishrant Wadi">Vishrant Wadi</option>
+                <option value="Wagholi">Wagholi</option>
+                <option value="Wakadewadi">Wakadewadi</option>
+                <option value="Wanowrie">Wanowrie</option>
+                <option value="Warje">Warje</option>
+                <option value="Yerawada">Yerawada</option>
+                <option value="Ghorpadi">Ghorpadi</option>
+                <!-- Add more options as needed -->
+            </select>
+        </div>
+        <button onclick="getPrediction()">Get Prediction</button>
+        <h2 id="result"></h2>
+    </div>
+</body>
+</html>
