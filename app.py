@@ -6,7 +6,7 @@ import logging
 app = Flask(__name__)
 
 # Load the model
-with open('CEP0 Model.pkl', 'rb') as file:
+with open('CEP0 Model.zip/CEP0 Model.pkl', 'rb') as file:
     model = pickle.load(file)
 
 # Set up logging
