@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prediction App</title>
     <style>
-         html, body {
+        html, body {
             height: 100%;
             margin: 0;
         }
@@ -69,7 +69,7 @@
                 size: document.getElementById('size').value,
                 total_sqft: document.getElementById('total_sqft').value,
                 site_location: document.getElementById('site_location').value,
-                society: document.getElementById('society').value,
+                society: "nan",  // Setting 'society' value to 'nan' explicitly
             };
 
             const response = await fetch('/predict', {
@@ -85,14 +85,8 @@
                 document.getElementById('result').innerText = 'Prediction: ₹ ' + parseFloat(result.prediction).toFixed(2) + ' lakhs'; // Updated line
             } else {
                 document.getElementById('result').innerText = 'Error in prediction';
-                }
+            }
         }
-        
-
-        // // Function to format prediction into lakhs
-        // function formatPrediction(prediction) {
-        //     return (prediction / 100000).toFixed(2);  // Convert to lakhs
-        // }
     </script>
 </head>
 <body>
@@ -113,18 +107,7 @@
             <label for="size">BHK:</label>
             <input type="number" id="size" required>
         </div>
-        <div class="form-group">
-            <label for="society">Society:</label>
-            <select id="society" required>
-                <option value="nan" selected>nan</option>
-                <option value="Coomee">Coomee</option>
-                <option value="Theanmp">Theanmp</option>
-                <option value="SJovest">SJovest</option>
-                <option value="ThhtsV">ThhtsV</option>
-                <option value="RSntsAp">RSntsAp</option>
-                <!-- Add more societies as needed -->
-            </select>
-        </div>
+        <!-- Removed the Society dropdown field -->
         <div class="form-group">
             <label for="total_sqft">Total Square Feet:</label>
             <input type="number" id="total_sqft" required>
